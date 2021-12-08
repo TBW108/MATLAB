@@ -1,0 +1,26 @@
+times=100;%试验次数
+subplot(2,1,1),axis([0,times,0,400]);
+subplot(2,1,2),axis([0,times,-0.8,1.2]);
+p0=1-prod(365:-1:336)/(365^30);%30个人的概率
+P=p0*ones(times);%
+subplot(2,1,2),plot(1:times,P);
+hold on
+frequency=zeros(times);%记录每次实验是否有相同人数的生日
+for i=1:times
+    rb=randi(365,1,30);%30个1-365的随机数
+    %第一幅图的每个点
+    X=i*ones(30);%产生横坐标
+    subplot(2,1,1),plot(X,rb,'b*');hold on;%画出每一次随机数的分布
+    %把相同的数标红并且记录这次实验是否有相同的数
+    for j=1:30
+        if length(find(rb==rb(j)))>=2%计算该元素个数是否大于等于2
+            frequency(i)=1;
+            subplot(2,1,1),scatter(i,rb(j),'r*');
+        end
+    end
+     %第二幅图的点
+     cum=cumsum(frequency);
+     subplot(2,1,2),plot(i,cum(i)/i,'r*');   
+end  
+
+p0=1-prod(365:-1:336)/(365^30);%30个人的概率
